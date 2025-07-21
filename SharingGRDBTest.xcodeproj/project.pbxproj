@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E2217B652E2CED7900DD0E35 /* SharingGRDB in Frameworks */ = {isa = PBXBuildFile; productRef = E2217B642E2CED7900DD0E35 /* SharingGRDB */; };
+		E2217B672E2CED7900DD0E35 /* SharingGRDBCore in Frameworks */ = {isa = PBXBuildFile; productRef = E2217B662E2CED7900DD0E35 /* SharingGRDBCore */; };
+		E2217B692E2CED7900DD0E35 /* StructuredQueriesGRDB in Frameworks */ = {isa = PBXBuildFile; productRef = E2217B682E2CED7900DD0E35 /* StructuredQueriesGRDB */; };
+		E2217B6B2E2CED7900DD0E35 /* StructuredQueriesGRDBCore in Frameworks */ = {isa = PBXBuildFile; productRef = E2217B6A2E2CED7900DD0E35 /* StructuredQueriesGRDBCore */; };
+		E2217B6E2E2CEEDD00DD0E35 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = E2217B6D2E2CEEDD00DD0E35 /* ComposableArchitecture */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		E2217B472E2CE82D00DD0E35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +60,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2217B6E2E2CEEDD00DD0E35 /* ComposableArchitecture in Frameworks */,
+				E2217B6B2E2CED7900DD0E35 /* StructuredQueriesGRDBCore in Frameworks */,
+				E2217B692E2CED7900DD0E35 /* StructuredQueriesGRDB in Frameworks */,
+				E2217B652E2CED7900DD0E35 /* SharingGRDB in Frameworks */,
+				E2217B672E2CED7900DD0E35 /* SharingGRDBCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +125,11 @@
 			);
 			name = SharingGRDBTest;
 			packageProductDependencies = (
+				E2217B642E2CED7900DD0E35 /* SharingGRDB */,
+				E2217B662E2CED7900DD0E35 /* SharingGRDBCore */,
+				E2217B682E2CED7900DD0E35 /* StructuredQueriesGRDB */,
+				E2217B6A2E2CED7900DD0E35 /* StructuredQueriesGRDBCore */,
+				E2217B6D2E2CEEDD00DD0E35 /* ComposableArchitecture */,
 			);
 			productName = SharingGRDBTest;
 			productReference = E2217B392E2CE82C00DD0E35 /* SharingGRDBTest.app */;
@@ -195,6 +213,10 @@
 			);
 			mainGroup = E2217B302E2CE82C00DD0E35;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E2217B632E2CED7900DD0E35 /* XCRemoteSwiftPackageReference "sharing-grdb" */,
+				E2217B6C2E2CEEDD00DD0E35 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E2217B3A2E2CE82C00DD0E35 /* Products */;
 			projectDirPath = "";
@@ -558,6 +580,53 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E2217B632E2CED7900DD0E35 /* XCRemoteSwiftPackageReference "sharing-grdb" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/sharing-grdb";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.0;
+			};
+		};
+		E2217B6C2E2CEEDD00DD0E35 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.20.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E2217B642E2CED7900DD0E35 /* SharingGRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2217B632E2CED7900DD0E35 /* XCRemoteSwiftPackageReference "sharing-grdb" */;
+			productName = SharingGRDB;
+		};
+		E2217B662E2CED7900DD0E35 /* SharingGRDBCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2217B632E2CED7900DD0E35 /* XCRemoteSwiftPackageReference "sharing-grdb" */;
+			productName = SharingGRDBCore;
+		};
+		E2217B682E2CED7900DD0E35 /* StructuredQueriesGRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2217B632E2CED7900DD0E35 /* XCRemoteSwiftPackageReference "sharing-grdb" */;
+			productName = StructuredQueriesGRDB;
+		};
+		E2217B6A2E2CED7900DD0E35 /* StructuredQueriesGRDBCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2217B632E2CED7900DD0E35 /* XCRemoteSwiftPackageReference "sharing-grdb" */;
+			productName = StructuredQueriesGRDBCore;
+		};
+		E2217B6D2E2CEEDD00DD0E35 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2217B6C2E2CEEDD00DD0E35 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E2217B312E2CE82C00DD0E35 /* Project object */;
 }
