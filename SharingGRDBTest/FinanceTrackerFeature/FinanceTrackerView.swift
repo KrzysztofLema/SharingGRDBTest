@@ -236,7 +236,7 @@ public struct FinanceTrackerView: View {
             )
             .padding(.horizontal)
         } else {
-            ForEach(store.recentTransactions, id: \.id) { transaction in
+            ForEach(store.transactionWithCategory, id: \.transaction.id) { transaction in
                 transactionRow(transaction)
             }
             .padding(.horizontal)
@@ -244,27 +244,27 @@ public struct FinanceTrackerView: View {
         }
     }
     
-    private func transactionRow(_ transaction: Transaction) -> some View {
+    private func transactionRow(_ transactionWithCategory: TransactionWithCategory) -> some View {
         Button {
-            send(.transactionTapped(transaction))
+            send(.transactionTapped(transactionWithCategory.transaction))
         } label: {
             HStack(spacing: 12) {
                 Circle()
                     .fill(Color.blue)
                     .frame(width: 32, height: 32)
                     .overlay(
-                        Image(systemName: "tag")
+                        Image(systemName: transactionWithCategory.icon)
                             .font(.caption)
                             .foregroundColor(.white)
                     )
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(transaction.description)
+                    Text(transactionWithCategory.description)
                         .font(.subheadline)
                         .foregroundColor(.primary)
                         .lineLimit(1)
                     
-                    if let date = transaction.date {
+                    if let date = transactionWithCategory.date {
                         Text(date, style: .date)
                             .font(.caption)
                             .foregroundColor(.secondary)
@@ -273,10 +273,10 @@ public struct FinanceTrackerView: View {
                 
                 Spacer()
                 
-                Text(transaction.amount.formattedCurrency())
+                Text(transactionWithCategory.amount.formattedCurrency())
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundColor(transaction.amount >= 0 ? .green : .red)
+                    .foregroundColor(transactionWithCategory.amount >= 0 ? .green : .red)
             }
             .padding()
             .background(
@@ -289,7 +289,7 @@ public struct FinanceTrackerView: View {
         .buttonStyle(PlainButtonStyle())
         .swipeActions(edge: .trailing) {
             Button(role: .destructive) {
-                send(.onDeleteTransaction(transaction))
+                send(.onDeleteTransaction(transactionWithCategory.transaction))
             } label: {
                 Image(systemName: "trash")
             }

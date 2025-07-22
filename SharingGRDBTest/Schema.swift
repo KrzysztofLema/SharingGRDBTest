@@ -28,16 +28,16 @@ extension Account.TableColumns {
 }
 
 @Table
-public struct Category: Hashable, Identifiable, Sendable {
+public struct Category: Hashable, Identifiable, Sendable, Equatable {
     public let id: Int
-    var name = ""
-    var type: CategoryType = .expense
-    var color = 0x007AFF_ff
-    var icon = "tag"
-    var isActive = true
-    var position = 0
-    var createdAt: Date?
-    var updatedAt: Date?
+    public var name = ""
+    public var type: CategoryType = .expense
+    public var color = 0x007AFF_ff
+    public var icon = "tag"
+    public var isActive = true
+    public var position = 0
+    public var createdAt: Date?
+    public var updatedAt: Date?
     
     public enum CategoryType: Int, Codable, QueryBindable {
         case income = 1
@@ -60,15 +60,15 @@ extension Category.TableColumns {
 @Table
 public struct Transaction: Codable, Equatable, Identifiable, Sendable {
     public let id: Int
-    var accountID: Account.ID
-    var categoryID: Category.ID
-    var amountCents: Int = 0
-    var description: String = ""
-    var date: Date?
-    var isRecurring = false
-    var recurringInterval: RecurringInterval?
-    var createdAt: Date?
-    var updatedAt: Date?
+    public var accountID: Account.ID
+    public var categoryID: Category.ID
+    public var amountCents: Int = 0
+    public var description: String = ""
+    public var date: Date?
+    public var isRecurring = false
+    public var recurringInterval: RecurringInterval?
+    public var createdAt: Date?
+    public var updatedAt: Date?
     
     public enum RecurringInterval: Int, Codable, QueryBindable {
         case daily = 1

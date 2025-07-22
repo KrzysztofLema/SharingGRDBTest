@@ -26,6 +26,20 @@ public struct FinanceTracker: Sendable {
         @FetchOne(Account.select { $0.balanceCents.sum() })
         var totalBalanceCents
         
+        @FetchAll
+        var transactionWithCategory: [TransactionWithCategory]
+        
+        var query: some StructuredQueries.Statement<TransactionWithCategory> {
+            Transaction
+                .group(by: \.id)
+                .leftJoin(Category.all, on: {
+                    $0.categoryID.eq($1.id)
+                })
+                .select({
+                    TransactionWithCategory.Columns(transaction: $0, category: $1)
+                })
+        }
+        
         var isLoading = false
         var errorMessage: String?
         
@@ -33,7 +47,9 @@ public struct FinanceTracker: Sendable {
             Decimal(totalBalanceCents ?? 0) / Decimal(100)
         }
         
-        public init() {}
+        public init() {
+            _transactionWithCategory = FetchAll(query)
+        }
     }
     
     public enum Action: ViewAction, Sendable {
@@ -53,7 +69,7 @@ public struct FinanceTracker: Sendable {
         }
     }
     
-    @Reducer(state: .equatable, action: .sendable)
+    @Reducer(state: .equatable, .sendable, action: .sendable)
     public enum Path {}
     
     @Reducer(state: .equatable, action: .sendable)
