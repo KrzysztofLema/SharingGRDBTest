@@ -43,6 +43,7 @@ public struct FinanceTracker: Sendable {
         
         @CasePathable
         public enum View: Sendable {
+            case onDeleteTransaction(Transaction)
             case onAppear
             case refreshData
             case addTransactionTapped
@@ -57,6 +58,8 @@ public struct FinanceTracker: Sendable {
     
     @Reducer(state: .equatable, action: .sendable)
     public enum Destination {}
+    
+    @Dependency(\.defaultDatabase) var database
     
     public var body: some ReducerOf<Self> {
         Reduce<State, Action> { state, action in
@@ -86,6 +89,15 @@ public struct FinanceTracker: Sendable {
                 return .none
                 
             case .destination, .path:
+                return .none
+            case .view(.onDeleteTransaction(let transaction)):
+                withErrorReporting {
+                    try database.write { db in
+                        try Transaction
+                            .delete(transaction)
+                            .execute(db)
+                    }
+                }
                 return .none
             }
         }

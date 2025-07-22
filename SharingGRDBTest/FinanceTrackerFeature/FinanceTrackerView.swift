@@ -14,21 +14,37 @@ public struct FinanceTrackerView: View {
             state: \.path,
             action: \.path
         )) {
-            ScrollView {
-                LazyVStack(spacing: 20) {
+            List {
+                Section {
                     balanceCard
                     quickActionsSection
                     accountsSection
-                    recentTransactionsSection
                 }
-                .padding()
+                Section {
+                    recentTransactionsSection
+                } header: {
+                    HStack {
+                        Text("Recent Transactions")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Button("View All") {
+                            // TODO: Navigate to transactions list
+                        }
+                        .font(.subheadline)
+                        .foregroundColor(.blue)
+                    }
+                    .padding(.horizontal)
+                }
             }
+            .listStyle(.plain)
             .navigationTitle("Finance Tracker")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add") {
-
+                        
                     }
                 }
             }
@@ -63,7 +79,6 @@ public struct FinanceTrackerView: View {
                 .foregroundColor(store.totalBalance >= 0 ? .primary : .red)
         }
         .frame(maxWidth: .infinity)
-        .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color(.systemBackground))
@@ -75,7 +90,6 @@ public struct FinanceTrackerView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Quick Actions")
                 .font(.headline)
-                .padding(.horizontal)
             
             HStack(spacing: 12) {
                 quickActionButton(
@@ -142,12 +156,11 @@ public struct FinanceTrackerView: View {
                 Spacer()
                 
                 Button("View All") {
-
+                    
                 }
                 .font(.subheadline)
                 .foregroundColor(.blue)
             }
-            .padding(.horizontal)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 12) {
@@ -155,7 +168,6 @@ public struct FinanceTrackerView: View {
                         accountCard(account)
                     }
                 }
-                .padding(.horizontal)
             }
         }
     }
@@ -199,52 +211,36 @@ public struct FinanceTrackerView: View {
         .buttonStyle(PlainButtonStyle())
     }
     
+    @ViewBuilder
     private var recentTransactionsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Recent Transactions")
-                    .font(.headline)
+        if store.recentTransactions.isEmpty {
+            VStack(spacing: 8) {
+                Image(systemName: "creditcard")
+                    .font(.title)
+                    .foregroundColor(.secondary)
                 
-                Spacer()
+                Text("No transactions yet")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
                 
-                Button("View All") {
-                    // TODO: Navigate to transactions list
-                }
-                .font(.subheadline)
-                .foregroundColor(.blue)
+                Text("Add your first transaction to get started")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color(.systemGray6))
+            )
+            .padding(.horizontal)
+        } else {
+            ForEach(store.recentTransactions, id: \.id) { transaction in
+                transactionRow(transaction)
             }
             .padding(.horizontal)
-            
-            if store.recentTransactions.isEmpty {
-                VStack(spacing: 8) {
-                    Image(systemName: "creditcard")
-                        .font(.title)
-                        .foregroundColor(.secondary)
-                    
-                    Text("No transactions yet")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Text("Add your first transaction to get started")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(.systemGray6))
-                )
-                .padding(.horizontal)
-            } else {
-                LazyVStack(spacing: 8) {
-                    ForEach(store.recentTransactions) { transaction in
-                        transactionRow(transaction)
-                    }
-                }
-                .padding(.horizontal)
-            }
+            .listStyle(.plain)
         }
     }
     
@@ -288,17 +284,23 @@ public struct FinanceTrackerView: View {
                     .fill(Color(.systemBackground))
                     .shadow(color: .black.opacity(0.05), radius: 1, x: 0, y: 1)
             )
+            
         }
         .buttonStyle(PlainButtonStyle())
+        .swipeActions(edge: .trailing) {
+            Button(role: .destructive) {
+                send(.onDeleteTransaction(transaction))
+            } label: {
+                Image(systemName: "trash")
+            }
+        }
     }
 }
 
 #Preview {
-    
     let _ = prepareDependencies {
         $0.defaultDatabase = try! appDatabase()
     }
-    
     
     FinanceTrackerView(
         store: Store(initialState: FinanceTracker.State()) {
